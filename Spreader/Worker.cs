@@ -8,6 +8,15 @@ using System.Collections.Generic;
 
 namespace Spreader
 {
+    public delegate void ScannerMethod(Worker ScanningWorker);
+
+    public class Scanner
+    {
+        public int LoopEvery;
+        public ScannerMethod Method;
+        public DateTime LastRun;
+    }
+
     public class Worker
     {
         private bool running = false;
@@ -17,6 +26,7 @@ namespace Spreader
         private DateTime LastKeepAlive = DateTime.Today;
         private DateTime LastStartAttempt = DateTime.Today;
         private List<string> AccessCodes = new List<string>();
+        private List<Scanner> Scanners = new List<Scanner>();
 
         public int Port = 21200;
         public bool DebugMode = false;
@@ -184,7 +194,13 @@ namespace Spreader
 
         private void DoScan()
         {
-            // TODO
+            foreach (Scanner scan in Scanners)
+            {
+                if (DateTime.Now >= scan.LastRun.AddMilliseconds(scan.LoopEvery)) {
+                    scan.Method(this);
+                    scan.LastRun = DateTime.Now;
+                }
+            }
         }
 
         private void SendWorkerStart()
@@ -360,6 +376,26 @@ namespace Spreader
         public void Stop()
         {
             running = false;
+        }
+
+        /// <summary>
+        /// Registers a Simple Scanner.
+        /// The supplied method will scan at a regular interval, and execute synchronously.
+        /// </summary>
+        /// <param name="method">The scanner method to execute.</param>
+        /// <param name="loop_every">How often to execute the scan method, in Milliseconds. (5,000 by default)</param>
+        public void RegisterSimpleScanner(ScannerMethod method, int loop_every = 5000)
+        {
+            if (method != null && loop_every > 100)
+            {
+                Scanner tmpScan = new Scanner()
+                {
+                    Method = method,
+                    LastRun = DateTime.Now,
+                    LoopEvery = loop_every
+                };
+                Scanners.Add(tmpScan);
+            }
         }
     }
 }

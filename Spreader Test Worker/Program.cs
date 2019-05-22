@@ -7,6 +7,11 @@ namespace Spreader_Test_Worker
 {
     class MyWorker : Worker
     {
+        public MyWorker()
+        {
+            RegisterSimpleScanner(ScanOutputString);
+        }
+
         protected override void WriteDebugLog(string message)
         {
             Console.WriteLine(string.Format("{0} DL {1}", DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), message));
@@ -17,6 +22,11 @@ namespace Spreader_Test_Worker
             LogError("Could not execute Task!!!");
             // TODO
             return false;
+        }
+
+        public void ScanOutputString (Worker ScanningWorker)
+        {
+            ScanningWorker.LogMessage("Scanned!");
         }
     }
 
@@ -39,7 +49,7 @@ namespace Spreader_Test_Worker
                 switch (xarg)
                 {
                     case "/ID":
-                        int.TryParse(xarg, out workerId);
+                        int.TryParse(argsplit[1], out workerId);
                         break;
                     case "/DEBUG":
                         debugMode = true;
