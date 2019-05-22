@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -110,7 +110,7 @@ namespace Spreader
 
         private void SendLog(Utilities.SpreaderLogLevel level, string message)
         {
-            SendToSocket("WKRLOG", string.Format("{0}{1}{2}", level, CommandSeparator, message));
+            SendToSocket("WKRLOG", string.Format("{0}{1}{2}", (int)level, CommandSeparator, message));
         }
 
         /// <summary>
