@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -260,7 +260,7 @@ namespace Spreader
 
             ClientInitialized = true;
 
-            SendToSocket("WKRINITIALIED");
+            SendToSocket("WKRINITIALIZED");
         }
 
         private void HandleClientPing()
