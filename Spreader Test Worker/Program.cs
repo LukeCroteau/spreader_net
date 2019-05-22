@@ -29,29 +29,37 @@ namespace Spreader_Test_Worker
 
         static void Main(string[] args)
         {
+            int workerId = 0;
+            bool debugMode = false;
+
+            foreach (string arg in args)
+            {
+                string[] argsplit = arg.Split('=');
+                string xarg = argsplit[0];
+                switch (xarg)
+                {
+                    case "/ID":
+                        int.TryParse(xarg, out workerId);
+                        break;
+                    case "/DEBUG":
+                        debugMode = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             LogMessage("Starting Worker");
             MyWorker wrkr = new MyWorker()
             {
-                WorkerID = 1,
-                DebugMode = true
+                WorkerID = workerId,
+                DebugMode = debugMode
             };
 
             TaskAwaiter<bool> awaiter = wrkr.Start().GetAwaiter();
 
-            LogMessage("Press any key to send a message");
-            Console.ReadKey();
-            wrkr.LogMessage("Local Worker Starting!");
-
-            LogMessage("Press any key to Stop Worker.");
-            Console.ReadKey();
-
-            wrkr.Stop();
-
             bool success = awaiter.GetResult();
             LogMessage($"Got result {success}");
-
-            LogMessage("Finished. Press any key to close.");
-            Console.ReadKey();
         }
     }
 }
