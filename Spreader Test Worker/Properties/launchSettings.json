@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Spreader Test Worker": {
+      "commandName": "Project",
+      "commandLineArgs": "/ID=1"
+    }
+  }
+}
