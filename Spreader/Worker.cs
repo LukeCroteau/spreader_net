@@ -134,7 +134,7 @@ namespace Spreader
                 WriteDebugLog(message);
 
             if (sendToClient)
-                SendLog(Utilities.SpreaderLogLevel.SPREADER_LOG_DEBUG, message);
+                SendLog(Utilities.SpreaderLogLevel.LOG_DEBUG, message);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Spreader
         /// <param name="message">Message to Log</param>
         public void LogMessage(string message)
         {
-            SendLog(Utilities.SpreaderLogLevel.SPREADER_LOG_MESSAGE, message);
+            SendLog(Utilities.SpreaderLogLevel.LOG_MESSAGE, message);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Spreader
         /// <param name="message">Message to Log</param>
         public void LogWarning(string message)
         {
-            SendLog(Utilities.SpreaderLogLevel.SPREADER_LOG_WARNING, message);
+            SendLog(Utilities.SpreaderLogLevel.LOG_WARNING, message);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Spreader
         /// <param name="message">Message to Log</param>
         public void LogError(string message)
         {
-            SendLog(Utilities.SpreaderLogLevel.SPREADER_LOG_ERROR, message);
+            SendLog(Utilities.SpreaderLogLevel.LOG_ERROR, message);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace Spreader
         /// <param name="message">Message to Log</param>
         public void LogFatal(string message)
         {
-            SendLog(Utilities.SpreaderLogLevel.SPREADER_LOG_FATAL, message);
+            SendLog(Utilities.SpreaderLogLevel.LOG_FATAL, message);
         }
 
         private void CheckKeepAlive()

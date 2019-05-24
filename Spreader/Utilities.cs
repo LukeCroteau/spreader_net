@@ -11,11 +11,11 @@ namespace Spreader
 
         public enum SpreaderLogLevel
         {
-            SPREADER_LOG_DEBUG = 0,
-            SPREADER_LOG_MESSAGE = 1,
-            SPREADER_LOG_WARNING = 2,
-            SPREADER_LOG_ERROR = 3,
-            SPREADER_LOG_FATAL = 4
+            LOG_DEBUG = 0,
+            LOG_MESSAGE = 1,
+            LOG_WARNING = 2,
+            LOG_ERROR = 3,
+            LOG_FATAL = 4
         }
 
         public static string EncodeParameters(string DecodedData)
