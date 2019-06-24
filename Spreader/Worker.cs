@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Spreader
 {
@@ -80,6 +81,48 @@ namespace Spreader
             }
 
             return true;
+        }
+
+        private string ReadResponse()
+        {
+            string response = "";
+            byte[] inmsg = new byte[4096];
+            lock (_transfer_lock)
+            {
+                int recvcount = 0;
+                DateTime runstarted = DateTime.Now;
+                while (DateTime.Now < runstarted.AddSeconds(5))
+                {
+                    try
+                    {
+                        recvcount = _socket.Receive(inmsg);
+                    }
+                    catch (Exception excp)
+                    {
+                        if (excp is ObjectDisposedException)
+                        {
+                            LogDebug(string.Format("Socket Exception: {0}", excp.Message), false);
+                            LogDebug("Closing Socket.", false);
+                            _socket = null;
+                            return "";
+                        }
+                    }
+
+                    if (recvcount > 0)
+                    {
+                        LastKeepAlive = DateTime.Now;
+                        char[] trimChars = { '\0' };
+                        response = Encoding.UTF8.GetString(inmsg).Trim(trimChars);
+                        if (DebugMode)
+                            WriteDebugLog(string.Format("DATA IN  - Message {0}", response));
+
+                        break;
+                    }
+
+                    Thread.Sleep(25);
+                }
+            }
+            return response;
         }
 
         private bool ReceiveFromSocket(out string data)
@@ -173,6 +216,24 @@ namespace Spreader
             SendLog(Utilities.SpreaderLogLevel.LOG_FATAL, message);
         }
 
+        public int AddNewTask(string taskKey, string taskParams, string accessCode)
+        {
+            SendToSocket("WKRTASKADD", JobID.ToString() + CommandSeparator +
+                Utilities.EncodeParameters(taskKey) + CommandSeparator +
+                Utilities.EncodeParameters(taskParams) + CommandSeparator +
+                Utilities.EncodeParameters(accessCode));
+
+            string resp = ReadResponse();
+            string result = resp.Split(CommandSeparator)[0];
+            int responseVal = 0;
+            if (result != "0")
+            {
+                int.TryParse(resp.Split(CommandSeparator)[1], out responseVal);
+            }
+            
+            return responseVal;
+        }
+
         private void CheckKeepAlive()
         {
             DateTime current = DateTime.Now;
@@ -196,7 +257,8 @@ namespace Spreader
         {
             foreach (Scanner scan in Scanners)
             {
-                if (DateTime.Now >= scan.LastRun.AddMilliseconds(scan.LoopEvery)) {
+                if (DateTime.Now >= scan.LastRun.AddMilliseconds(scan.LoopEvery))
+                {
                     scan.Method(this);
                     scan.LastRun = DateTime.Now;
                 }
@@ -207,7 +269,7 @@ namespace Spreader
         {
             if (ClientInitialized)
                 return;
-            
+
             if ((DateTime.Now - LastStartAttempt).TotalMilliseconds > 10000)
             {
                 LastStartAttempt = DateTime.Now;
@@ -262,7 +324,7 @@ namespace Spreader
             string[] parms = parameters.Split('|');
 
             string codes = parms[0];
-            foreach(string code in codes.Split(';'))
+            foreach (string code in codes.Split(';'))
             {
                 if (!AccessCodes.Contains(code))
                     AccessCodes.Add(code);
@@ -312,7 +374,7 @@ namespace Spreader
                 return false;
 
             bool returnval = false;
-            
+
             try
             {
                 _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
