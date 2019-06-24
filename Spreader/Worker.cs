@@ -216,6 +216,14 @@ namespace Spreader
             SendLog(Utilities.SpreaderLogLevel.LOG_FATAL, message);
         }
 
+        /// <summary>
+        /// Adds a new task for the Job
+        /// </summary>
+        /// <param name="taskKey">A unique key for this task</param>
+        /// <param name="taskParams">Any parameters this task might need.
+        /// These parameters will be Encoded for protection.</param>
+        /// <param name="accessCode">The access code required to process this task.</param>
+        /// <returns>The ID of the new Task, or 0 if task adding failed.</returns>
         public int AddNewTask(string taskKey, string taskParams, string accessCode)
         {
             SendToSocket("WKRTASKADD", JobID.ToString() + CommandSeparator +
