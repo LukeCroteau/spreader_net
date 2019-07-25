@@ -320,6 +320,9 @@ namespace Spreader
                     LogDebug(string.Format("Received a Task! Params {0}", parms), false);
                     HandleClientTask(parms);
                     break;
+                case "WKREVENT":
+                    LogDebug(string.Format("Received Event: {0}", parms));
+                    break;
                 default:
                     LogDebug(string.Format("Unknown Command {0}, Quitting.", command), false);
                     running = false;
@@ -347,7 +350,7 @@ namespace Spreader
             ClientInitialized = true;
 
             SendToSocket("WKRINITIALIZED");
-            SendToSocket("WKREVENTSUBSCRIBE", string.Format("NEW_TASK_{0}", JobID));
+            SendToSocket("WKREVENTSUBSCRIBE", string.Format("NEWTASK_JOB_{0}", JobID));
         }
 
         private void HandleClientPing()
