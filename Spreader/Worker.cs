@@ -321,7 +321,7 @@ namespace Spreader
                     HandleClientTask(parms);
                     break;
                 case "WKREVENT":
-                    LogDebug(string.Format("Received Event: {0}", parms));
+                    LogDebug(string.Format("Received Event: {0}", parms), false);
                     break;
                 default:
                     LogDebug(string.Format("Unknown Command {0}, Quitting.", command), false);
