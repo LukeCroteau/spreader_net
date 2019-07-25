@@ -347,6 +347,7 @@ namespace Spreader
             ClientInitialized = true;
 
             SendToSocket("WKRINITIALIZED");
+            SendToSocket("WKREVENTSUBSCRIBE", string.Format("NEW_TASK_{0}", JobID));
         }
 
         private void HandleClientPing()
