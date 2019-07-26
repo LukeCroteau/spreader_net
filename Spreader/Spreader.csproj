@@ -1,7 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Luke Croteau</Authors>
+    <Company />
+    <Description>DotNet Client for the Spreader Distributed Work System</Description>
+    <Copyright>2019 Luke Croteau</Copyright>
+    <PackageProjectUrl>https://github.com/LukeCroteau/spreader</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/LukeCroteau/spreader_net</RepositoryUrl>
+    <PackageTags>distributed</PackageTags>
+    <PackageId>Spreader</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
