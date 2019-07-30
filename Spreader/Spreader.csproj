@@ -10,6 +10,7 @@
     <RepositoryUrl>https://github.com/LukeCroteau/spreader_net</RepositoryUrl>
     <PackageTags>distributed</PackageTags>
     <PackageId>Spreader</PackageId>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>

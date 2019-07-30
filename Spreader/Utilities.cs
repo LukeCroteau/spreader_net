@@ -4,10 +4,13 @@ using System.Text;
 
 namespace Spreader
 {
-    class Utilities
+    public class Utilities
     {
         public const int WorkerPingLimit = 180000;
         public const int WorkerTimeoutLimit = 600000;
+        public const char CommandSeparator = '|';
+        public const string CommandSeparatorEncoded = "&#124;";
+        public const char InitSeparator = ';';
 
         public enum SpreaderLogLevel
         {
@@ -20,12 +23,12 @@ namespace Spreader
 
         public static string EncodeParameters(string DecodedData)
         {
-            return DecodedData.Replace("|", "&#124;");
+            return DecodedData.Replace(CommandSeparator.ToString(), CommandSeparatorEncoded);
         }
 
         public static string DecodeParameters(string EncodedData)
         {
-            return EncodedData.Replace("&#124;", "|");
+            return EncodedData.Replace(CommandSeparatorEncoded, CommandSeparator.ToString());
         }
     }
 }

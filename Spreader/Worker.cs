@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Collections.Generic;
 using System.Threading;
+using static Spreader.Utilities;
 
 namespace Spreader
 {
@@ -34,7 +35,6 @@ namespace Spreader
         public int WorkerID = 0;
         public int JobID = 0;
         public Dictionary<string, string> JobParameters = new Dictionary<string, string>();
-        public char CommandSeparator = '|';
 
         /// <summary>
         /// If DebugMode is enabled, this will output a copy of all log messages.
@@ -332,10 +332,10 @@ namespace Spreader
 
         private void HandleClientInit(string parameters)
         {
-            string[] parms = parameters.Split('|');
+            string[] parms = parameters.Split(CommandSeparator);
 
             string codes = parms[0];
-            foreach (string code in codes.Split(';'))
+            foreach (string code in codes.Split(InitSeparator))
             {
                 if (!AccessCodes.Contains(code))
                     AccessCodes.Add(code);
@@ -365,11 +365,11 @@ namespace Spreader
 
         private void HandleClientTask(string task_data)
         {
-            string[] data = task_data.Split('|');
+            string[] data = task_data.Split(CommandSeparator);
             string taskid = data[0];
             string parms = data[1];
 
-            bool success = DoTask(parms);
+            bool success = DoTask(DecodeParameters(parms));
             SendToSocket("WKRTASKDONE", string.Format("{0}{1}{2}", taskid, CommandSeparator, success ? "1" : "0"));
         }
 
