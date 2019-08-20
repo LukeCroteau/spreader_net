@@ -355,7 +355,7 @@ namespace Spreader
 
         private void HandleClientPing()
         {
-            SendToSocket("PONG");
+            SendToSocket("WKRPONG");
         }
 
         private void HandleClientPong()
