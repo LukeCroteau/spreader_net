@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SpreaderService": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
