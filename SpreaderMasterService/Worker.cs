@@ -19,9 +19,9 @@ namespace SpreaderMasterService
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            // TODO:Load Configuration
+            // TODO:Connect to Data server
 
-            // TODO:Load Plugins
+            // TODO:Load Plugins (Will the Master Server need Plugins?)
 
             while (!stoppingToken.IsCancellationRequested)
             {
